@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  include SessionsHelper
+
   def new
 
   end
@@ -8,10 +10,12 @@ class SessionsController < ApplicationController
 
     if user && user.authenticate(params[:session][:password])
       # Success
+      log_in user
+      redirect_to user
     else
       # Failure
       # flash[:denger]はTwitterのBootstrapで文字が赤いフラッシュができる
-      flash[:danger] = 'Invalid email/password combination'
+      flash.now[:danger] = 'Invalid email/password combination'
       render 'new'
     end
 
